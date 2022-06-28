@@ -9,6 +9,17 @@
  * Author:            Jhayvon Adelan
  */
 
+require 'plugin-update-checker/plugin-update-checker.php';
+$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+	'https://github.com/Jvon550/turnover-cost-calculator/',
+	__FILE__,
+	'Turnover calculator'
+);
+
+//Set the branch that contains the stable release.
+$myUpdateChecker->setBranch('master');
+//Optional: If you're using a private repository, specify the access token like this:
+// $myUpdateChecker->setAuthentication('your-token-here');
 
 // style imports
 function themeslug_enqueue_style() {
@@ -76,21 +87,19 @@ function showInterface() {
         $comEmail = $_POST["comEmail"];
         $result = $_POST["result"];
         $currency = $_POST["currency"];
-
+        //myemail
         add_filter( 'wp_mail_content_type', 'set_html_content_type' );
         function set_html_content_type() {
             return 'text/html';
         }
-        // $logo = plugin_dir_url( __DIR__ )."turnover-calculator/assets/logo.png";
-        //myemail
         $subject = "Beaconforce Turnover Cost Calculator";
-        $body = '<div>';
-        $body .= '<p>Hello '.$fName.',</p>';
+        $body = '<p>Hello '.$fName.',</p>';
         $body .= '</br></br>';
         $body .= '<p>Thank you for using Beaconforce turnonver cost calculator. The turnonver cost of '.$comName.' company is <b>'.$currency.$result.'</b></p>';
         $body .= '</br></br>';
         $body .= '<p> This is a system-generated email. Please do not reply.</p>';
-        $body .= '</div>';
+
+
         wp_mail($comEmail, $subject , $body);
 
         unset( $_POST["fName"], $_POST["lName"], $_POST["comName"], $_POST["comEmail"], $_POST["x"], $_POST["z"], $_POST["y"], $_POST["v"], $_POST["b"], $_POST["n"]);
@@ -106,6 +115,9 @@ function wporg_shortcode( $atts = [], $content = null) {
 }
 //mymain
 function calculatorFunction(){
+    // $attachment = plugin_dir_url( __FILE__ )."assets/logo.png";
+    // echo $attachment;
+    // echo "<img src='".$attachment."'/>";
     ?>
     
     <div class='container p-5'>
